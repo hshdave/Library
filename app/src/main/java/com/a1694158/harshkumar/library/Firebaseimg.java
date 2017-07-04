@@ -69,7 +69,7 @@ public class Firebaseimg  {
             GridItem gimg = new GridItem();
             System.out.println("cjfgdf             "+ds.getKey());
             //gimg.setCover(ds.child("cover").getValue(GridItem.class).getCover());
-         //   System.out.println(gimg);
+            System.out.println(gimg);
             imgs.add(gimg);
         }
 
