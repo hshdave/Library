@@ -31,6 +31,26 @@ public class Firebaseimg  {
 
     }
 
+    private void fetchData(DataSnapshot dataSnapshot)
+    {
+        imgs.clear();
+        for (DataSnapshot ds : dataSnapshot.getChildren())
+        {
+
+            GridItem grd = new GridItem();
+            grd.setCover(ds.getValue(GridItem.class).getCover());
+            imgs.add(grd);
+
+        }
+
+        if (imgs.size()>0)
+        {
+            adapter= new GridViewAdapter(c,imgs);
+            gv.setAdapter(adapter);
+        }
+    }
+
+
     public void regetData()
     {
         dbref.addChildEventListener(new ChildEventListener() {
@@ -61,24 +81,6 @@ public class Firebaseimg  {
         });
     }
 
-    private void fetchData(DataSnapshot dataSnapshot)
-    {
-        imgs.clear();
-        for (DataSnapshot ds : dataSnapshot.getChildren())
-        {
-            GridItem gimg = new GridItem();
-            System.out.println("cjfgdf             "+ds.getKey());
-            //gimg.setCover(ds.child("cover").getValue(GridItem.class).getCover());
-            System.out.println(gimg);
-            imgs.add(gimg);
-        }
-
-        if (imgs.size()>0)
-        {
-            adapter= new GridViewAdapter(c,imgs);
-            gv.setAdapter(adapter);
-        }
-    }
 
 
 }

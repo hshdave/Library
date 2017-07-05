@@ -43,20 +43,25 @@ public class MainActivity extends ActionBarActivity {
     Map<String,Object> map1;
     Firebaseimg frimg;
 
+    DatabaseReference db;
+    FirebaseHelper fh;
+    MyGridviewAdapter gvd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mGridView = (GridView) findViewById(R.id.gridView);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("books");
+        db = FirebaseDatabase.getInstance().getReference();
+        fh = new FirebaseHelper(db);
 
-        frimg = new Firebaseimg(this,mGridView,myRef);
+      //  System.out.println("Db from Main.....  "+db);
+       // gvd =  new MyGridviewAdapter(fh.retrive(),this);
+       // mGridView.setAdapter(gvd);
 
+        frimg = new Firebaseimg(this,mGridView,db);
         frimg.regetData();
-
 
 
        /* gridItems = new ArrayList<>();
@@ -74,13 +79,13 @@ public class MainActivity extends ActionBarActivity {
         });*/
     }
 
-    private void collectPhoneNumbers(Map<String,Object> books) {
+  /*  private void collectPhoneNumbers(Map<String,Object> books) {
 
         for (Map.Entry<String, Object> entry : books.entrySet()){
             Map singleUser = (Map) entry.getValue();
             gridItems.add((String) singleUser.get("cover"));
         }
 
-    }
+    }*/
 
 }
