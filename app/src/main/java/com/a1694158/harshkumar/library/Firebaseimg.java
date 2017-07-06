@@ -38,6 +38,7 @@ public class Firebaseimg  {
 
             GridItem grd = new GridItem();
             grd.setCover(ds.getValue(GridItem.class).getCover());
+            grd.setTitle(ds.getValue(GridItem.class).getTitle());
             imgs.add(grd);
 
         }
