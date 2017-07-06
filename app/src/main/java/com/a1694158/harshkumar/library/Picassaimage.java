@@ -15,7 +15,7 @@ public class Picassaimage {
     {
         if(url != null && url.length()>0)
         {
-            Picasso.with(c).load(url).placeholder(R.drawable.loading).into(img);
+            Picasso.with(c).load(url).placeholder(R.drawable.loading).noFade().resize(750,450).into(img);
         }else
         {
             Picasso.with(c).load(R.drawable.smile).into(img);

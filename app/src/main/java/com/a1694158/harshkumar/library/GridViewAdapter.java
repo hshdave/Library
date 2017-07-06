@@ -27,8 +27,6 @@ public class GridViewAdapter extends BaseAdapter {
     Context c;
     ArrayList<GridItem> images;
     LayoutInflater inflater;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef ;
     public GridViewAdapter(Context c, ArrayList<GridItem> images) {
         this.c = c;
         this.images = images;
