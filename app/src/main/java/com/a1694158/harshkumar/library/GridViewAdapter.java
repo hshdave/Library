@@ -60,8 +60,11 @@ public class GridViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.grid_item,parent,false);
         }
 
-        Imageviewholder holder = new Imageviewholder(convertView);
-        Picassaimage.getImages(c,images.get(position).getCover(),holder.img);
+        System.out.println("Iharsh"+images.get(position).getCover());
+        ImageView img = (ImageView) convertView.findViewById(R.id.grid_item_image);
+        Picassaimage.getImages(c,images.get(position).getCover(),img);
+        System.out.println("Titles......."+images.get(position).getTitle());
+
 
         return convertView;
     }
