@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Firebaseimg  {
 
-    Context c;
+    private Context c;
     ArrayList<GridItem> imgs = new ArrayList<>();
 
     GridViewAdapter adapter;
@@ -39,6 +39,7 @@ public class Firebaseimg  {
             GridItem grd = new GridItem();
             grd.setCover(ds.getValue(GridItem.class).getCover());
             grd.setTitle(ds.getValue(GridItem.class).getTitle());
+            grd.setQuantity(ds.getValue(GridItem.class).getQuantity());
             imgs.add(grd);
 
         }
