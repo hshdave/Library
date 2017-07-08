@@ -6,9 +6,7 @@
     tools:context="com.a1694158.harshkumar.library.Details"
     android:orientation="vertical">
 
-
-
-    <ImageView
+ <ImageView
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:id="@+id/img_details"
@@ -58,6 +56,14 @@
             android:textSize="25sp"
             android:id="@+id/txt_lqantity"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Author: "
+            android:id="@+id/txt_lauthor"
+            android:textSize="25sp"
+            />
+
 
     </LinearLayout>
 
@@ -96,8 +102,25 @@
             android:text="abdhadawd"
             android:textSize="25sp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="abdhadawd"
+            android:id="@+id/txt_author"
+            android:textSize="25sp"
+            />
+
     </LinearLayout>
 
 </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rent"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:id="@+id/btn_rent"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

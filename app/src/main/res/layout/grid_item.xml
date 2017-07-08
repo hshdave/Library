@@ -22,7 +22,4 @@
         android:maxLines="2"
         android:textSize="12sp" />
 
-
-
-
 </FrameLayout>
