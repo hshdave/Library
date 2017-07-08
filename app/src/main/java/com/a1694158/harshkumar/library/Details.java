@@ -3,8 +3,11 @@ package com.a1694158.harshkumar.library;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,7 @@ public class Details extends AppCompatActivity {
 
     FirebaseDatabase fb = FirebaseDatabase.getInstance();
     DatabaseReference myref;
+    Button btn_rent;
     String key;
 
     @Override
@@ -37,6 +41,7 @@ public class Details extends AppCompatActivity {
         txt_quantity = (TextView) findViewById(R.id.txt_quantity);
         img_cover = (ImageView) findViewById(R.id.img_details);
         txt_author = (TextView) findViewById(R.id.txt_author);
+        btn_rent = (Button) findViewById(R.id.btn_rent);
 
         Bundle bundle = getIntent().getExtras();
         key = bundle.getString("key");
@@ -57,7 +62,33 @@ public class Details extends AppCompatActivity {
                 txt_title.setText(dataSnapshot.child("title").getValue(String.class));
                 txt_publisher.setText(dataSnapshot.child("publisher").getValue(String.class));
                 txt_date.setText(dataSnapshot.child("date").getValue(String.class));
-                txt_quantity.setText(""+qty);
+
+
+                if (qty<=0)
+                {
+                    txt_quantity.setTextColor(getResources().getColor(R.color.red));
+                    txt_quantity.setText(""+qty);
+                    btn_rent.setClickable(false);
+                }else
+                {
+                    txt_quantity.setText(""+qty);
+                    btn_rent.setClickable(true);
+
+                    btn_rent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getApplicationContext(),"Thank you for rent book!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+
+
+
+
+
+
 
 
                 myref = fb.getReference("authors");

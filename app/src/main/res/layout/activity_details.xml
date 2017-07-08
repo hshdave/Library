@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.a1694158.harshkumar.library.Details"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
  <ImageView
         android:layout_width="150dp"
@@ -76,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_title"
-            android:text="abdhadawd"
             android:textSize="25sp"
             android:singleLine="true"
             android:ellipsize="end"/>
@@ -84,14 +84,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_publisher"
-            android:text="abdhadawd"
             android:textSize="25sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_date"
-            android:text="abdhadawd"
             android:textSize="25sp"/>
 
 
@@ -99,13 +97,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txt_quantity"
-            android:text="abdhadawd"
             android:textSize="25sp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="abdhadawd"
             android:id="@+id/txt_author"
             android:textSize="25sp"
             />
@@ -121,6 +117,10 @@
         android:layout_marginTop="30dp"
         android:textSize="30sp"
         android:id="@+id/btn_rent"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="#dcdcdc"
+        android:elevation="20dp"
+        android:stateListAnimator="@null"
+        />
 
 </LinearLayout>
