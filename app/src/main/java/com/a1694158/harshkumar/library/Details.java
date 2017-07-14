@@ -106,7 +106,7 @@ public class Details extends AppCompatActivity {
                 });
 
 
-                Picassaimage.getImages(Details.this,dataSnapshot.child("cover").getValue(String.class),img_cover);
+             //   Picassaimage.getImages(Details.this,dataSnapshot.child("cover").getValue(String.class),img_cover);
             }
 
             @Override

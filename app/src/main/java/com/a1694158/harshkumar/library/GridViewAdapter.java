@@ -2,11 +2,14 @@ package com.a1694158.harshkumar.library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -29,15 +32,18 @@ public class GridViewAdapter extends BaseAdapter {
     Context c;
     ArrayList<GridItem> images;
     LayoutInflater inflater;
+    ProgressBar pw;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef1 = database.getReference();
 
     String ls;
 
-    public GridViewAdapter(Context c, ArrayList<GridItem> images) {
+    public GridViewAdapter(Context c, ArrayList<GridItem> images,ProgressBar pw) {
         this.c = c;
         this.images = images;
+        this.pw = pw;
+
     }
 
     @Override
@@ -54,6 +60,9 @@ public class GridViewAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+
+
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -75,18 +84,18 @@ public class GridViewAdapter extends BaseAdapter {
 
         if (country.equals("CA"))
         {
-            System.out.println("You are in canada");
+            Log.d("Country","You are in canada");
         }
         else if(country.equals("US")){
-            System.out.println("You are in USA");
+            Log.d("Country","You are in USA");
 
             if (images.get(position).isShipToUSA())
             {
-                Picassaimage.getImages(c,images.get(position).getCover(),img);
+                Picassaimage.getImages(c,images.get(position).getCover(),img,pw);
             }
         }
 
-               Picassaimage.getImages(c,images.get(position).getCover(),img);
+               Picassaimage.getImages(c,images.get(position).getCover(),img,pw);
 
         img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,4 +139,5 @@ public class GridViewAdapter extends BaseAdapter {
         });
     return convertView;
     }
+
 }

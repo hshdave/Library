@@ -2,6 +2,7 @@ package com.a1694158.harshkumar.library;
 
 import android.content.Context;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,11 +23,13 @@ public class Firebaseimg  {
     GridViewAdapter adapter;
     GridView gv;
     DatabaseReference dbref;
+    ProgressBar pw;
 
-    public Firebaseimg(Context c, GridView gv, DatabaseReference dbref) {
+    public Firebaseimg(Context c, GridView gv, DatabaseReference dbref,ProgressBar pw) {
         this.c = c;
         this.gv = gv;
         this.dbref = dbref;
+        this.pw = pw;
 
     }
 
@@ -46,7 +49,7 @@ public class Firebaseimg  {
 
         if (imgs.size()>0)
         {
-            adapter= new GridViewAdapter(c,imgs);
+            adapter= new GridViewAdapter(c,imgs,pw);
             gv.setAdapter(adapter);
         }
     }

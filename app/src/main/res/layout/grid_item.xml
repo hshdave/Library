@@ -12,14 +12,4 @@
         android:layout_height="230dp"
         android:layout_marginTop="15dp"/>
 
-    <TextView
-        android:id="@+id/grid_item_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:maxLines="2"
-        android:textSize="12sp" />
-
 </FrameLayout>
