@@ -11,6 +11,7 @@ public class GridItem {
     private long author_id;
     private int quantity;
     private boolean shipToCanada,shipToUSA;
+    private String id;
 
 
     public GridItem(String cover, String title, String date, String publisher, long author_id, int quantity, boolean shipToCanada, boolean shipToUSA) {

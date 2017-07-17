@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Locale;
 
 
 public class Details extends AppCompatActivity {
@@ -29,7 +26,6 @@ public class Details extends AppCompatActivity {
     DatabaseReference myref;
     Button btn_rent;
     String key;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,14 +79,6 @@ public class Details extends AppCompatActivity {
 
                 }
 
-
-
-
-
-
-
-
-
                 myref = fb.getReference("authors");
                 myref.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -105,8 +93,7 @@ public class Details extends AppCompatActivity {
                     }
                 });
 
-
-             //   Picassaimage.getImages(Details.this,dataSnapshot.child("cover").getValue(String.class),img_cover);
+                Picassaimage.getwithImages(Details.this,dataSnapshot.child("cover").getValue(String.class),img_cover);
             }
 
             @Override
