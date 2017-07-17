@@ -64,11 +64,9 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId())
         {
             case R.id.menu_search:
-                Toast.makeText(MainActivity.this,"Clicked on Search!",Toast.LENGTH_LONG).show();
                 displayDialog();
                 return true;
             case R.id.menu_All_books:
-                Toast.makeText(MainActivity.this,"Clicked on All book!",Toast.LENGTH_LONG).show();
                 frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw);
                 frimg.regetData();
                 return true;
@@ -106,6 +104,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 String selected = spin_search.getSelectedItem().toString();
+                String user = edt_search.getText().toString().toLowerCase();
                 frimg.regetData();
                 if (selected.equals("Author"))
                 {
@@ -136,41 +135,28 @@ public class MainActivity extends ActionBarActivity {
 
                         }
                     });
-                }else if(selected.equals("Book Name"))
-                {
-                    db.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot ds : dataSnapshot.getChildren())
-                            {
-                                System.out.println("book name  "+ds.toString());
-                                if(ds.child("title").getValue().toString().contains((edt_search.getText().toString())))
-                                {
-                                    //  System.out.println("Checking if in search "+ds.child("name").getValue().toString()+"  "+"key..    "+ds.getKey());
-                                    String key = ds.getKey();
-                                    System.out.println("Check Key  in Main     "+key);
-                                    dbme = FirebaseDatabase.getInstance();
-                                    db = dbme.getReference("books");
-                                    frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw,key);
-                                    frimg.regetData();
-
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                }else if(selected.equals("Book Name")) {
+                        getSearch(user);
                 }
-
+                else if(selected.equals("Publisher"))
+                {
+                    getSearch(user);
+                }
+                else if (selected.equals("Search By"))
+                {
+                    Toast.makeText(getApplicationContext(),"Please Select Search Category!",Toast.LENGTH_LONG).show();
+                }
                 d.dismiss();
-
-
             }
         });
 
         d.show();
+    }
+    public void getSearch(String userInput)
+    {
+        dbme = FirebaseDatabase.getInstance();
+        db = dbme.getReference("books");
+        frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw,userInput);
+        frimg.regetData();
     }
 }

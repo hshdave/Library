@@ -1,6 +1,7 @@
 package com.a1694158.harshkumar.library;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
@@ -120,26 +121,46 @@ public class Firebaseimg  {
 
     public void withKeyData(DataSnapshot dataSnapshot,String key)
     {
-        int aut_key =  Integer.parseInt(key);
-        System.out.println("Check Key      "+aut_key);
+
+        int aut_key = 0;
+
+            if(key.matches("[0-9]+"))
+            {
+                aut_key =  Integer.parseInt(key);
+            }
+
+
+
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
            // System.out.println("Datasnapshot Value with key  "+ ds.child("author_id").getValue().toString());
 
           //  System.out.println(ds.getValue().toString());
-
-
+            String tit = ds.child("title").getValue().toString().toLowerCase();
+            String pub = ds.child("publisher").getValue().toString().toLowerCase();
+            GridItem grd;
             if(ds.child("author_id").getValue(Integer.class)==aut_key)
             {
             //    System.out.println("In Search    "+dataSnapshot.toString());
-                GridItem grd  = ds.getValue(GridItem.class);
+                grd  = ds.getValue(GridItem.class);
                 imgs.add(grd);
-            }else if(ds.getKey().equals(key))
+            }else if (tit.contains(key))
             {
-                GridItem grd  = ds.getValue(GridItem.class);
+
+                System.out.println("Check Key Inside if      "+ds.getKey());
+                grd  = ds.getValue(GridItem.class);
+                imgs.add(grd);
+            }else if (pub.contains(key))
+            {
+                System.out.println("Check Key Inside pub if      "+ds.getKey());
+                grd  = ds.getValue(GridItem.class);
                 imgs.add(grd);
             }
 
+        }
+        for (int i=0;i<imgs.size();i++)
+        {
+            System.out.println("Arraylist  "+imgs.get(i).getTitle());
         }
         if (imgs.size()>0)
         {
