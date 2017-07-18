@@ -73,40 +73,12 @@ public class Firebaseimg  {
 
             }
         });
-
-        /*dbref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                fetchData(dataSnapshot);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
     }
 
     public void normalData(DataSnapshot dataSnapshot)
     {
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-            System.out.println("Datasnapshot Value without key  "+ ds.toString());
             GridItem grd  = ds.getValue(GridItem.class);
             imgs.add(grd);
         }
@@ -133,34 +105,23 @@ public class Firebaseimg  {
 
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-           // System.out.println("Datasnapshot Value with key  "+ ds.child("author_id").getValue().toString());
-
-          //  System.out.println(ds.getValue().toString());
             String tit = ds.child("title").getValue().toString().toLowerCase();
             String pub = ds.child("publisher").getValue().toString().toLowerCase();
             GridItem grd;
             if(ds.child("author_id").getValue(Integer.class)==aut_key)
             {
-            //    System.out.println("In Search    "+dataSnapshot.toString());
                 grd  = ds.getValue(GridItem.class);
                 imgs.add(grd);
             }else if (tit.contains(key))
             {
-
-                System.out.println("Check Key Inside if      "+ds.getKey());
                 grd  = ds.getValue(GridItem.class);
                 imgs.add(grd);
             }else if (pub.contains(key))
             {
-                System.out.println("Check Key Inside pub if      "+ds.getKey());
                 grd  = ds.getValue(GridItem.class);
                 imgs.add(grd);
             }
 
-        }
-        for (int i=0;i<imgs.size();i++)
-        {
-            System.out.println("Arraylist  "+imgs.get(i).getTitle());
         }
         if (imgs.size()>0)
         {
