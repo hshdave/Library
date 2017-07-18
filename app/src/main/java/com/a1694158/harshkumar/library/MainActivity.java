@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 String selected = spin_search.getSelectedItem().toString();
-                String user = edt_search.getText().toString().toLowerCase();
+                final String user = edt_search.getText().toString().toLowerCase();
                 frimg.regetData();
                 if (selected.equals("Author"))
                 {
@@ -116,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                            for(DataSnapshot ds : dataSnapshot.getChildren())
                            {
-                               if(ds.child("name").getValue().toString().contains((edt_search.getText().toString())))
+                               if(ds.child("name").getValue().toString().toLowerCase().contains(user.toLowerCase()))
                                {
                                   //  System.out.println("Checking if in search "+ds.child("name").getValue().toString()+"  "+"key..    "+ds.getKey());
                                    String key = ds.getKey();
