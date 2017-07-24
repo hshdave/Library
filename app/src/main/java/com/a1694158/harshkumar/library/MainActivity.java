@@ -1,16 +1,15 @@
 package com.a1694158.harshkumar.library;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -217,9 +216,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void selectDrawerItem(final MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
 
         FirebaseDatabase dbs = FirebaseDatabase.getInstance();
         DatabaseReference dr = dbs.getReference("category");
@@ -230,7 +226,8 @@ public class MainActivity extends ActionBarActivity {
                     System.out.println("Category in selection " + ds.getValue(String.class));
 
                     if (menuItem.getTitle().equals(ds.getValue(String.class))) {
-                        Toast.makeText(getApplicationContext(), "Selected on  " + ds.getValue(String.class), Toast.LENGTH_LONG).show();
+
+                        Log.d("Selected on Drawer : ", ds.getValue(String.class));
                         dbme = FirebaseDatabase.getInstance();
                         db = dbme.getReference("books");
                         frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, "", menuItem.getTitle().toString());
@@ -245,17 +242,6 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
-
-        try {
-            // fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        // FragmentManager fragmentManager = getSupportFragmentManager();
-        // fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
@@ -282,8 +268,6 @@ public class MainActivity extends ActionBarActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
 
         final Menu menu = nvDrawer.getMenu();
-        //final Menu cat = menu.addSubMenu("Categories");
-
 
         FirebaseDatabase dbs = FirebaseDatabase.getInstance();
         DatabaseReference dr = dbs.getReference("category");

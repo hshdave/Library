@@ -2,6 +2,7 @@ package com.a1694158.harshkumar.library;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
@@ -50,12 +51,10 @@ public class Firebaseimg  {
     {
         imgs.clear();
 
-        if (cat != null && !cat.isEmpty() && cat != "")
+        if (cat != null && !cat.isEmpty())
         {
-            //  System.out.println("Get Title Check on Click  "+cat);
-
             byCategory(dataSnapshot, cat);
-        } else if (key != null && !key.isEmpty() && key != "") {
+        } else if (key != null && !key.isEmpty()) {
             withKeyData(dataSnapshot,key);
 
         }else {
@@ -141,19 +140,17 @@ public class Firebaseimg  {
     {
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-            String catls = ds.child("category").toString();
+
             GridItem grd;
-          //  System.out.println("Get Child of the categoties "+catls);
 
             for(DataSnapshot ds2 : ds.child("category").getChildren())
             {
-                //System.out.println("In iteration "+ds2.getValue().toString());
 
+                Log.d("Category Inside Books ", ds2.getValue().toString());
                 if(ds2.getValue(String.class).contains(cat))
                 {
                     grd  = ds.getValue(GridItem.class);
                     imgs.add(grd);
-                    System.out.println("Only Contais Node  "+ds.toString());
                 }
             }
 

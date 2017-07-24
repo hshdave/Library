@@ -106,8 +106,6 @@ public class GridViewAdapter extends BaseAdapter {
                         DatabaseReference myRef1 = database.getReference();
                         ls = myRef1.child("books").child(dataSnapshot.getKey()).toString();
 
-                      //  Toast.makeText(c,ls,Toast.LENGTH_LONG).show();
-
                         Intent i = new Intent(c,Details.class);
                         i.putExtra("key",ls);
                         c.startActivity(i);
