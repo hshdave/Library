@@ -1,8 +1,16 @@
 package com.a1694158.harshkumar.library;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -37,10 +47,34 @@ public class MainActivity extends ActionBarActivity {
     ImageView img_close;
     FirebaseDatabase dbme;
 
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+
+    private ActionBarDrawerToggle drawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // Toolbar to replace the ActionBar.
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+
+
+        mDrawer.addDrawerListener(drawerToggle);
+
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
+
+
         mGridView = (GridView) findViewById(R.id.gridView);
         pw = (ProgressBar) findViewById(R.id.prog_me);
 
@@ -49,6 +83,8 @@ public class MainActivity extends ActionBarActivity {
         db = dbme.getReference("books");
         frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw);
         frimg.regetData();
+
+        addMenuItemInNavMenuDrawer();
 
     }
 
@@ -63,6 +99,9 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
+            case R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
             case R.id.menu_search:
                 displayDialog();
                 return true;
@@ -123,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
                                    System.out.println("Check Key  in Main     "+key);
                                    dbme = FirebaseDatabase.getInstance();
                                    db = dbme.getReference("books");
-                                   frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw,key);
+                                   frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, key, "");
                                    frimg.regetData();
 
                                }
@@ -156,7 +195,113 @@ public class MainActivity extends ActionBarActivity {
     {
         dbme = FirebaseDatabase.getInstance();
         db = dbme.getReference("books");
-        frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw,userInput);
+        frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, userInput, "");
         frimg.regetData();
     }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+        // and will not render the hamburger icon without it.
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(final MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+
+        FirebaseDatabase dbs = FirebaseDatabase.getInstance();
+        DatabaseReference dr = dbs.getReference("category");
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    System.out.println("Category in selection " + ds.getValue(String.class));
+
+                    if (menuItem.getTitle().equals(ds.getValue(String.class))) {
+                        Toast.makeText(getApplicationContext(), "Selected on  " + ds.getValue(String.class), Toast.LENGTH_LONG).show();
+                        dbme = FirebaseDatabase.getInstance();
+                        db = dbme.getReference("books");
+                        frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, "", menuItem.getTitle().toString());
+                        frimg.regetData();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        try {
+            // fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        // FragmentManager fragmentManager = getSupportFragmentManager();
+        // fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private void addMenuItemInNavMenuDrawer() {
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+
+        final Menu menu = nvDrawer.getMenu();
+        //final Menu cat = menu.addSubMenu("Categories");
+
+
+        FirebaseDatabase dbs = FirebaseDatabase.getInstance();
+        DatabaseReference dr = dbs.getReference("category");
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    System.out.println("Check All category   " + ds.getValue(String.class));
+                    menu.add(ds.getValue(String.class));
+                    nvDrawer.invalidate();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

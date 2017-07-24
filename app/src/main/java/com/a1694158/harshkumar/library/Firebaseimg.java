@@ -27,6 +27,7 @@ public class Firebaseimg  {
     DatabaseReference dbref;
     ProgressBar pw;
     String key="";
+    String cat = "";
     public Firebaseimg(Context c, GridView gv, DatabaseReference dbref, ProgressBar pw) {
         this.c = c;
         this.gv = gv;
@@ -35,19 +36,26 @@ public class Firebaseimg  {
 
     }
 
-    public Firebaseimg(Context c, GridView gv, DatabaseReference dbref, ProgressBar pw,String key) {
+    public Firebaseimg(Context c, GridView gv, DatabaseReference dbref, ProgressBar pw, String key, String cat) {
         this.c = c;
         this.gv = gv;
         this.dbref = dbref;
         this.pw = pw;
         this.key = key;
+        this.cat = cat;
     }
+
 
     private void fetchData(DataSnapshot dataSnapshot)
     {
         imgs.clear();
-        if(key!=null&&!key.isEmpty()&&key!="")
+
+        if (cat != null && !cat.isEmpty() && cat != "")
         {
+            //  System.out.println("Get Title Check on Click  "+cat);
+
+            // byCategory(dataSnapshot,cat);
+        } else if (key != null && !key.isEmpty() && key != "") {
             withKeyData(dataSnapshot,key);
 
         }else {
@@ -101,8 +109,6 @@ public class Firebaseimg  {
                 aut_key =  Integer.parseInt(key);
             }
 
-
-
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
             String tit = ds.child("title").getValue().toString().toLowerCase();
@@ -130,6 +136,35 @@ public class Firebaseimg  {
             adapter.notifyDataSetChanged();
         }
     }
+
+ /*   public void byCategory(DataSnapshot dataSnapshot,String cat)
+    {
+        for (DataSnapshot ds : dataSnapshot.getChildren())
+        {
+            String catls = ds.child("category").toString();
+            GridItem grd;
+          //  System.out.println("Get Child of the categoties "+catls);
+
+            for(DataSnapshot ds2 : ds.child("category").getChildren())
+            {
+                //System.out.println("In iteration "+ds2.getValue().toString());
+
+                if(ds2.getValue(String.class).contains(cat))
+                {
+                    grd  = ds.getValue(GridItem.class);
+                    imgs.add(grd);
+                    System.out.println("Only Contais Node  "+ds.toString());
+                }
+            }
+
+        }
+        if (imgs.size()>0)
+        {
+            adapter= new GridViewAdapter(c,imgs,pw);
+            gv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }*/
 
 
 

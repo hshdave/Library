@@ -4,7 +4,6 @@
         <item>Search By</item>
         <item>Book Name</item>
         <item>Author</item>
-        <item>Category</item>
         <item>Publisher</item>
     </string-array>
 </resources>

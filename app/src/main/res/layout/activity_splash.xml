@@ -12,7 +12,7 @@
         android:layout_height="250dp"
         android:src="@drawable/book"
         android:layout_gravity="center"
-        android:layout_marginTop="105dp" />
+        android:layout_marginTop="115dp" />
 
     <TextView
         android:layout_width="wrap_content"
