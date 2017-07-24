@@ -1,8 +1,16 @@
 package com.a1694158.harshkumar.library;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -18,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,8 +35,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -41,9 +46,8 @@ public class MainActivity extends ActionBarActivity {
     ProgressBar pw;
 
     EditText edt_search;
-    Button btn_search;
+    Button btn_search, btn_close;
     Spinner spin_search;
-    ImageView img_close;
     FirebaseDatabase dbme;
 
     private DrawerLayout mDrawer;
@@ -58,33 +62,42 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Toolbar to replace the ActionBar.
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = setupDrawerToggle();
+        if (isNetworkAvailable()) {
 
 
-        mDrawer.addDrawerListener(drawerToggle);
+            // Toolbar to replace the ActionBar.
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
-        // Setup drawer view
-        setupDrawerContent(nvDrawer);
+            // Find our drawer view
+            mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawerToggle = setupDrawerToggle();
 
 
-        mGridView = (GridView) findViewById(R.id.gridView);
-        pw = (ProgressBar) findViewById(R.id.prog_me);
+            mDrawer.addDrawerListener(drawerToggle);
 
-        dbme = FirebaseDatabase.getInstance();
+            nvDrawer = (NavigationView) findViewById(R.id.nvView);
+            // Setup drawer view
+            setupDrawerContent(nvDrawer);
 
-        db = dbme.getReference("books");
-        frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw);
-        frimg.regetData();
 
-        addMenuItemInNavMenuDrawer();
+            mGridView = (GridView) findViewById(R.id.gridView);
+            pw = (ProgressBar) findViewById(R.id.prog_me);
 
+            dbme = FirebaseDatabase.getInstance();
+            getData("", "");
+
+            addMenuItemInNavMenuDrawer();
+        } else {
+            Snackbar bar = Snackbar.make(findViewById(R.id.drawer_layout), "No Internet Connection!", Snackbar.LENGTH_INDEFINITE);
+            bar.setAction("Setting", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), 0);
+                }
+            });
+            bar.show();
+        }
     }
 
     @Override
@@ -117,16 +130,19 @@ public class MainActivity extends ActionBarActivity {
     private void displayDialog()
     {
         final Dialog d = new Dialog(this,R.style.CustomDialog);
-        d.setContentView(R.layout.searh_dialog);
+        d.setTitle("Search Book");
+        d.setContentView(R.layout.search_dialog);
+        d.getWindow().setTitleColor(Color.parseColor("#0097A7"));
+        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         edt_search = (EditText) d.findViewById(R.id.dig_edtsearch);
         btn_search = (Button) d.findViewById(R.id.dig_btn);
         spin_search = (Spinner) d.findViewById(R.id.dig_spin);
-        img_close = (ImageView) d.findViewById(R.id.ser_close);
+        btn_close = (Button) d.findViewById(R.id.dig_cancel);
 
 
-        img_close.setOnClickListener(new View.OnClickListener() {
+        btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 d.dismiss();
@@ -158,7 +174,7 @@ public class MainActivity extends ActionBarActivity {
                                {
                                   //  System.out.println("Checking if in search "+ds.child("name").getValue().toString()+"  "+"key..    "+ds.getKey());
                                    String key = ds.getKey();
-                                   System.out.println("Check Key  in Main     "+key);
+                                   Log.d("Check Key  in Main", key);
                                    dbme = FirebaseDatabase.getInstance();
                                    db = dbme.getReference("books");
                                    frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, key, "");
@@ -195,10 +211,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public void getSearch(String userInput)
     {
-        dbme = FirebaseDatabase.getInstance();
-        db = dbme.getReference("books");
-        frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, userInput, "");
-        frimg.regetData();
+        getData(userInput, "");
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -231,10 +244,9 @@ public class MainActivity extends ActionBarActivity {
                     if (menuItem.getTitle().equals(ds.getValue(String.class))) {
 
                         Log.d("Selected on Drawer : ", ds.getValue(String.class));
-                        dbme = FirebaseDatabase.getInstance();
-                        db = dbme.getReference("books");
-                        frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, "", menuItem.getTitle().toString());
-                        frimg.regetData();
+
+                        getData("", menuItem.getTitle().toString());
+
                     }
 
                 }
@@ -257,7 +269,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
+        if (isNetworkAvailable()) {
+            drawerToggle.syncState();
+        }
+
     }
 
     @Override
@@ -278,7 +293,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    System.out.println("Check All category   " + ds.getValue(String.class));
                     menu.add(ds.getValue(String.class));
                     nvDrawer.invalidate();
                 }
@@ -291,4 +305,23 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    private void getData(String key, String cat) {
+        dbme = FirebaseDatabase.getInstance();
+        db = dbme.getReference("books");
+        frimg = new Firebaseimg(MainActivity.this, mGridView, db, pw, key, cat);
+        frimg.regetData();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    protected void onRestart() {
+        startActivity(getIntent());
+        super.onRestart();
+    }
 }

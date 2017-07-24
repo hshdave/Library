@@ -1,7 +1,11 @@
 package com.a1694158.harshkumar.library;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -20,8 +24,8 @@ public class splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(splash.this,MainActivity.class);
 
+                Intent i = new Intent(splash.this, MainActivity.class);
                 startActivity(i);
                 finish();
 
@@ -30,4 +34,6 @@ public class splash extends AppCompatActivity {
 
 
     }
+
+
 }
