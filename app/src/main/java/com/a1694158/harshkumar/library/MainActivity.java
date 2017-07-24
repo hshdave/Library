@@ -117,7 +117,6 @@ public class MainActivity extends ActionBarActivity {
     private void displayDialog()
     {
         final Dialog d = new Dialog(this,R.style.CustomDialog);
-    //    d.setTitle("Search Books");
         d.setContentView(R.layout.searh_dialog);
 
 
@@ -148,6 +147,7 @@ public class MainActivity extends ActionBarActivity {
                 {
                     final FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference dbsch =  database.getReference("authors");
+                    d.dismiss();
 
                     dbsch.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -175,16 +175,19 @@ public class MainActivity extends ActionBarActivity {
                     });
                 }else if(selected.equals("Book Name")) {
                         getSearch(user);
+                    d.dismiss();
                 }
                 else if(selected.equals("Publisher"))
                 {
                     getSearch(user);
+                    d.dismiss();
                 }
                 else if (selected.equals("Search By"))
                 {
                     Toast.makeText(getApplicationContext(),"Please Select Search Category!",Toast.LENGTH_LONG).show();
+                    edt_search.setText("");
                 }
-                d.dismiss();
+
             }
         });
 

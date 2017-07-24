@@ -25,7 +25,7 @@ public class Details extends AppCompatActivity {
 
     FirebaseDatabase fb = FirebaseDatabase.getInstance();
     DatabaseReference myref;
-    Button btn_rent, btn_test;
+    Button btn_rent;
     String key;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +39,6 @@ public class Details extends AppCompatActivity {
         img_cover = (ImageView) findViewById(R.id.img_details);
         txt_author = (TextView) findViewById(R.id.txt_author);
         btn_rent = (Button) findViewById(R.id.btn_rent);
-        btn_test = (Button) findViewById(R.id.test);
-
-
-        btn_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         Bundle bundle = getIntent().getExtras();
         key = bundle.getString("key");
