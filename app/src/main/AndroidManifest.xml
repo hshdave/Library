@@ -14,11 +14,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:label="Books"></activity>
         <activity
             android:name=".Details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:label="Rent Book" />
         <activity
             android:name=".splash"
             android:screenOrientation="portrait">
