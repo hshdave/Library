@@ -54,7 +54,7 @@ public class Firebaseimg  {
         {
             //  System.out.println("Get Title Check on Click  "+cat);
 
-            // byCategory(dataSnapshot,cat);
+            byCategory(dataSnapshot, cat);
         } else if (key != null && !key.isEmpty() && key != "") {
             withKeyData(dataSnapshot,key);
 
@@ -137,7 +137,7 @@ public class Firebaseimg  {
         }
     }
 
- /*   public void byCategory(DataSnapshot dataSnapshot,String cat)
+    public void byCategory(DataSnapshot dataSnapshot, String cat)
     {
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
@@ -164,7 +164,7 @@ public class Firebaseimg  {
             gv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
-    }*/
+    }
 
 
 
