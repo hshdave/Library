@@ -59,8 +59,6 @@ public class Firebaseimg  {
         {
             byCategory(dataSnapshot, cat);
         } else if (key != null && !key.isEmpty()) {
-
-            // withKeyData(dataSnapshot,key);
             withKeyLocation(dataSnapshot, key);
 
         } else {
@@ -118,14 +116,14 @@ public class Firebaseimg  {
 
                     System.out.println("Get Data from main Datasnap  " + ds.toString());
 
-                    withKeyDataTest(ds, key, canada, usa);
+                    withKeyDataTest(ds, key);
 
                 }
             } else if (isUSA(country)) {
                 Log.d("Check Country", "You are in USA");
                 if (usa.equals(true) || canada.equals(false)) {
 
-                    withKeyDataTest(ds, key, canada, usa);
+                    withKeyDataTest(ds, key);
                 }
             }
 
@@ -134,7 +132,7 @@ public class Firebaseimg  {
     }
 
 
-    private void withKeyDataTest(DataSnapshot ds, String key, Boolean can, Boolean us) {
+    private void withKeyDataTest(DataSnapshot ds, String key) {
 
         int aut_key = 0;
 
@@ -161,44 +159,6 @@ public class Firebaseimg  {
 
         if (imgs.size() > 0) {
             adapter = new GridViewAdapter(c, imgs, pw);
-            gv.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-
-    private void withKeyData(DataSnapshot dataSnapshot, String key)
-    {
-
-        int aut_key = 0;
-
-            if(key.matches("[0-9]+"))
-            {
-                aut_key =  Integer.parseInt(key);
-            }
-
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            String tit = ds.child("title").getValue().toString().toLowerCase();
-            String pub = ds.child("publisher").getValue().toString().toLowerCase();
-            GridItem grd;
-
-            if (ds.child("author_id").getValue(Integer.class) == aut_key) {
-                System.out.println("in key data " + ds.toString());
-
-                grd = ds.getValue(GridItem.class);
-                imgs.add(grd);
-            } else if (tit.contains(key)) {
-                grd = ds.getValue(GridItem.class);
-                imgs.add(grd);
-            } else if (pub.contains(key)) {
-                grd = ds.getValue(GridItem.class);
-                imgs.add(grd);
-            }
-
-        }
-        if (imgs.size()>0)
-        {
-            adapter= new GridViewAdapter(c,imgs,pw);
             gv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
