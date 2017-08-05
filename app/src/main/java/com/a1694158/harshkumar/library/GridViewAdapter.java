@@ -75,23 +75,7 @@ public class GridViewAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.grid_item,parent,false);
         }
 
-      //  System.out.println("Iharsh"+images.get(position).getCover());
         final ImageView img = (ImageView) convertView.findViewById(R.id.grid_item_image);
-
-        String country = Locale.getDefault().getCountry();
-
-        if (country.equals("CA"))
-        {
-            Log.d("Country","You are in canada");
-        }
-        else if(country.equals("US")){
-            Log.d("Country","You are in USA");
-
-            if (images.get(position).isShipToUSA())
-            {
-                Picassaimage.getImages(c,images.get(position).getCover(),img,pw);
-            }
-        }
 
                Picassaimage.getImages(c,images.get(position).getCover(),img,pw);
 
