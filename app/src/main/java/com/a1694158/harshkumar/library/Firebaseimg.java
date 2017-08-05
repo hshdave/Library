@@ -166,18 +166,30 @@ public class Firebaseimg  {
 
     private void byCategory(DataSnapshot dataSnapshot, String cat)
     {
+        String country = Locale.getDefault().getCountry();
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
+            Boolean canada = ds.child("shipToCanada").getValue(Boolean.class);
+            Boolean usa = ds.child("shipToUSA").getValue(Boolean.class);
             GridItem grd;
-
-            for(DataSnapshot ds2 : ds.child("category").getChildren())
-            {
-
-                Log.d("Category Inside Books ", ds2.getValue().toString());
-                if(ds2.getValue(String.class).contains(cat))
-                {
-                    grd  = ds.getValue(GridItem.class);
-                    imgs.add(grd);
+            for (DataSnapshot ds2 : ds.child("category").getChildren()) {
+                if (isCanada(country)) {
+                    if (canada.equals(true) || usa.equals(false)) {
+                        Log.d("Category in Canada", ds2.getValue().toString());
+                        if (ds2.getValue(String.class).contains(cat)) {
+                            grd = ds.getValue(GridItem.class);
+                            imgs.add(grd);
+                        }
+                    }
+                } else if (isUSA(country)) {
+                    Log.d("Check cat Country", "You are in USA");
+                    if (usa.equals(true) || canada.equals(false)) {
+                        Log.d("Category in USA", ds2.getValue().toString());
+                        if (ds2.getValue(String.class).contains(cat)) {
+                            grd = ds.getValue(GridItem.class);
+                            imgs.add(grd);
+                        }
+                    }
                 }
             }
 
