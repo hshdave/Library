@@ -10,4 +10,9 @@
         android:title="All Books"
         app:showAsAction="collapseActionView"/>
 
+    <item
+        android:id="@+id/menu_exit"
+        android:title="Close"
+        app:showAsAction="collapseActionView" />
+
 </menu>

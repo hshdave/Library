@@ -121,6 +121,9 @@ public class MainActivity extends ActionBarActivity {
                 frimg = new Firebaseimg(MainActivity.this, mGridView,db,pw);
                 frimg.regetData();
                 return true;
+            case R.id.menu_exit:
+                finish();
+                System.exit(0);
             default:
                 return super.onOptionsItemSelected(item);
         }
